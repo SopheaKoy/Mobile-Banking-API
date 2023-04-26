@@ -19,4 +19,10 @@ public class AccountTypeServiceImpl implements AccountTypeService{
         System.out.println(accountTypes.get(0).getName());
         return accountTypeMapStruct.toDtoList(accountTypes);
     }
+
+    @Override
+    public List<AccountTypeDto> delete() {
+        List<AccountType> accountTypes = accountTypeMapper.deleteById();
+        return accountTypeMapStruct.toDtoList(accountTypes);
+    }
 }
