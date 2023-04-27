@@ -6,11 +6,11 @@ import co.istad.mbanking.base.BaseRest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpRequest;
 import java.time.LocalDateTime;
 
 @RestController
@@ -24,11 +24,49 @@ public class UserRestController {
     public BaseRest<?> createNewUser(@RequestBody @Valid CreateUserDto createUserDto){
         UserDto userDto = userService.createNewUser(createUserDto);
         return BaseRest.builder()
-               .code(400)
+                .code(HttpStatus.OK.value())
                .status(true)
                .message("User has been create successfully.")
-               .data(userDto)
-                .timestamp(LocalDateTime.now())
+               .data(userDto).timestamp(LocalDateTime.now())
+
                .build();
     }
+
+    @GetMapping("/{id}")
+    public BaseRest<?> findUserById(@PathVariable Integer id){
+        UserDto userDto =userService.findById(id);
+        return BaseRest.builder()
+                .code(HttpStatus.OK.value())
+                .status(true)
+                .message("User has been found.")
+                .data(userDto)
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
+    @DeleteMapping("/{id}")
+    public BaseRest<?> deleteUserById(@PathVariable Integer id){
+        Integer deletedId= userService.deleteUserById(id);
+        return BaseRest.builder()
+                .code(HttpStatus.OK.value())
+                .status(true)
+                .message("User has been delete successfully.")
+                .data(deletedId)
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
+
+    @PutMapping("/{id}")
+    public BaseRest<?> updateIsDeletedStatusById(@PathVariable Integer id, @RequestBody IsDeletedDto isDeletedDto){
+        Integer deletedId= userService.updateIsDeletedUserStatus(id, isDeletedDto.status());
+        return BaseRest.builder()
+                .code(HttpStatus.OK.value())
+                .status(true)
+                .message("User has been delete successfully.")
+                .data(deletedId)
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
 }

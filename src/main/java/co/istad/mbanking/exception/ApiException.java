@@ -7,6 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,7 +18,19 @@ import java.util.Map;
 @RestControllerAdvice
 public class ApiException {
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST) //
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(ResponseStatusException.class)
+    public BaseError<?> handleServiceException(ResponseStatusException e){
+        return BaseError.builder()
+                .status(true)
+                .code(e.getStatusCode().value())
+                .message("Something went wrong..! please check")
+                .code(404)
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public BaseError<?> handleValidationException(MethodArgumentNotValidException e) {
         List<Map<String,String>> errors = new ArrayList<>();

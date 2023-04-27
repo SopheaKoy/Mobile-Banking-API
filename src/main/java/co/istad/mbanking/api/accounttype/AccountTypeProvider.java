@@ -20,4 +20,6 @@ public class AccountTypeProvider {
                     .WHERE("id =#{id}");
         }}.toString();
     }
+
+    //Insert
 }

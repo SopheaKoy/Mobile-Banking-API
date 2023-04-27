@@ -1,12 +1,12 @@
-package co.istad.mbanking.api.accounttype;
+package co.istad.mbanking.api.accounttype.web;
 
+import co.istad.mbanking.api.accounttype.AccountTypeService;
+import co.istad.mbanking.api.accounttype.web.AccountTypeDto;
 import co.istad.mbanking.base.BaseRest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
@@ -36,5 +36,11 @@ public class AccountTypeRestController {
                 .data(accountTypeDtoList)
                 .timestamp(LocalDateTime.now())
                 .build();
+    }
+
+    @PostMapping({"id"})
+    public BaseRest<?> createNewAccountType(@RequestBody @Valid AccountTypeDto accountTypeDto){
+
+        return null;
     }
 }

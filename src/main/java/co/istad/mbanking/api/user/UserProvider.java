@@ -3,7 +3,6 @@ package co.istad.mbanking.api.user;
 
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.jdbc.SQL;
-import static org.apache.ibatis.jdbc.SqlBuilder.INSERT_INTO;
 
 public class UserProvider {
     private static final String tableName = "users";
@@ -19,5 +18,27 @@ public class UserProvider {
             VALUES("is_deleted", "FALSE");
         }}.toString();
 
+    }
+    public String buildSelectById(){
+        return new SQL(){{
+            SELECT("*");
+            FROM(tableName);
+            WHERE("id=#{id}","is_deleted = FALSE");
+        }}.toString();
+    }
+
+    public String buildDeleteById(){
+        return new SQL(){{
+            DELETE_FROM(tableName);
+            WHERE("id=#{id}");
+        }}.toString();
+    }
+
+    public String buildUpdateIsDeletedByIdSql(){
+        return new SQL(){{
+            UPDATE(tableName);
+            SET("is_deleted = #{status}");
+            WHERE("id=#{id}");
+        }}.toString();
     }
 }

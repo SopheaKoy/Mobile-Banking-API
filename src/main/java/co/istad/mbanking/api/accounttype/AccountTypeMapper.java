@@ -1,8 +1,6 @@
 package co.istad.mbanking.api.accounttype;
 
-import org.apache.ibatis.annotations.DeleteProvider;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -16,4 +14,5 @@ public interface AccountTypeMapper {
 
     @DeleteProvider(type = AccountTypeProvider.class, method = "buildDeleteSql")
     List<AccountType> deleteById();
+
 }
