@@ -33,6 +33,10 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'org.postgresql:postgresql'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    //page
+    implementation 'com.github.pagehelper:pagehelper-spring-boot-starter:1.4.6'
+
 }
 
 tasks.named('test') {

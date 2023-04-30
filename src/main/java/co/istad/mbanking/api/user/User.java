@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
+
 public class User {
     //!POJO Class User
     private Integer id;

@@ -5,7 +5,9 @@ import org.apache.ibatis.jdbc.SQL;
 public class AccountTypeProvider {
     // Dynamic SQL
     //!Select
-    public String buildSelectSql(){
+    private final String tableName = "account_types";
+
+    public String buildSelectSql() {
         return new SQL() {{
             //TODO:
             SELECT("*");
@@ -13,13 +15,36 @@ public class AccountTypeProvider {
         }}.toString();
     }
 
-    //! Delete
-    public String buildDeleteSql(){
-        return new SQL(){{
-            DELETE_FROM("account_types")
-                    .WHERE("id =#{id}");
+    //#Insert
+    public String buildInsertSql() {
+        return new SQL() {{
+            INSERT_INTO(tableName);
+            VALUES("name", "#{a.name}");
         }}.toString();
     }
 
-    //Insert
+    //!Delete AccountType
+    public String buildDeleteSql() {
+        return new SQL() {{
+            DELETE_FROM(tableName);
+            WHERE("id =#{id}");
+        }}.toString();
+    }
+    public String buildSelectByIdSql(){
+        return new SQL(){{
+            SELECT("*");
+            FROM(tableName);
+            WHERE("id =#{id}");
+        }}.toString();
+    }
+    public String buildUpdateAccountTypeSql(){
+        return new SQL(){{
+            UPDATE(tableName);
+            SET("name=#{a.name}");
+            WHERE("id =#{a.id}");
+        }}.toString();
+    }
+    public String buildSelectByNameSql(){
+        return new SQL(){{}}.toString();
+    }
 }

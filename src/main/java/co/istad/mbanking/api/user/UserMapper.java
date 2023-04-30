@@ -3,6 +3,7 @@ package co.istad.mbanking.api.user;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -14,8 +15,10 @@ public interface UserMapper {
     void insert(@Param("u") User user);
 
     @SelectProvider(type = UserProvider.class ,method = "buildSelectById")
-    @Result(column="student_card_id", property = "studentCardId")
-    @Result(column="is_student" , property = "isStudent")
+    @Results(id ="userResultMap", value = {
+            @Result(column="student_card_id", property = "studentCardId"),
+            @Result(column="is_student" , property = "isStudent")
+    })
     Optional<User> selectById(@Param("id") Integer Id);
 
 
@@ -28,5 +31,16 @@ public interface UserMapper {
 
     @UpdateProvider(type = UserProvider.class, method = "buildUpdateIsDeletedByIdSql")
     void updateIsDeletedById(@Param("id") Integer id,@Param("status") boolean status);
+
+    @SelectProvider(type = UserProvider.class, method="buildSelectNameSql")
+    @ResultMap("userResultMap")
+    List<User> select(String name);
+
+    @UpdateProvider(type = UserProvider.class, method = "buildUpdateByIdSql")
+    void updateById(@Param("u") User user);
+
+    @SelectProvider(type = UserProvider.class, method="buildFindCardByIdSql")
+    Optional<User> findCardById(String studentCardId);
+
 
 }

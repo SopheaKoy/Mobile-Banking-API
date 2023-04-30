@@ -41,4 +41,29 @@ public class UserProvider {
             WHERE("id=#{id}");
         }}.toString();
     }
+
+    public String buildSelectNameSql(){
+        return new SQL(){{
+            SELECT("*");
+            FROM(tableName);
+            WHERE("name ILIKE '%' || #{name} || '%'");
+            ORDER_BY("id ASC");
+        }}.toString();
+    }
+
+    public String buildUpdateByIdSql(){
+        return  new SQL(){{
+            UPDATE(tableName);
+            SET("name = #{u.name}");
+            SET("gender = #{u.gender}");
+            WHERE("id = #{u.id}");
+        }}.toString();
+    }
+    public String buildFindCardByIdSql(){
+        return new  SQL(){{
+            SELECT("*");
+            FROM(tableName);
+            WHERE("student_card_id =#{studentCardId}");
+        }}.toString();
+    }
 }
