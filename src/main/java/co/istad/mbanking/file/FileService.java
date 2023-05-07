@@ -1,7 +1,11 @@
 package co.istad.mbanking.file;
 
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface FileService {
@@ -30,5 +34,16 @@ public interface FileService {
 
     // find image by filename
     FileDto getFileByName(String name);
+
+    // Delete by filename
+    boolean deleteFileByName(String name);
+
+    // Delete all File
+    boolean deleteAllFile();
+
+
+    // file Download by name
+   FileDownloadDto downloadFileByName(String name);
+
 
 }

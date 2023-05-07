@@ -6,7 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,9 +65,53 @@ public class FileServiceImpl implements  FileService{
             String extension = name.substring(lastDotIndex +1);
             File file = getFileByName[0];
             return new FileDto(file.getName(), url,extension,size);
-//            return  new FileDto(name,url , extension ,size);
         }else{
             return null;
         }
+    }
+
+    @Override
+    public boolean deleteFileByName(String fileName) {
+        File files = new File(fileUtil.fileServerPath);
+        File [] getFileByName = files.listFiles(((dir, name) -> name.equals(fileName)));
+        if(getFileByName.length > 0){
+            File file = getFileByName[0];
+            return file.delete();
+        }else{
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteAllFile() {
+        File files = new File(fileUtil.fileServerPath);
+        File [] getFileByName = files.listFiles();
+        boolean isSuccess = true;
+        for (File file : getFileByName) {
+            if(!file.delete()){
+                isSuccess=false;
+            }
+        }
+        return isSuccess;
+    }
+
+    @Override
+    public FileDownloadDto downloadFileByName(String fileName){
+        List<FileDownloadDto> downloads = new ArrayList<>();
+        File files = new File(fileUtil.fileServerPath);
+        File[] fileDownload = files.listFiles();
+        for (File file : fileDownload) {
+            if (file.isFile()) {
+                String name = file.getName();
+                String url = fileUtil.fileBaseUrl + name;
+                String downloadUrl = fileUtil.fileBaseUrl + name;
+                long size = file.length();
+                int lastDotIndex = name.lastIndexOf(".");
+                String extension = name.substring(lastDotIndex + 1);
+                downloads.add(new FileDownloadDto(name, url, downloadUrl, extension, size));
+                System.out.println(file);
+            }
+        }
+        return null;
     }
 }

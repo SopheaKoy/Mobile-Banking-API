@@ -1,14 +1,17 @@
 package co.istad.mbanking.file;
 
 import co.istad.mbanking.base.BaseRest;
-import lombok.Getter;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Param;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -69,4 +72,31 @@ public class FileRestController {
                 .code(HttpStatus.OK.value())
                 .build();
     }
+    @DeleteMapping("/{fileName}")
+    public BaseRest<?> deleteByName(@PathVariable String fileName){
+       boolean isDeleted = fileService.deleteFileByName(fileName);
+        return BaseRest.builder()
+                .status(true)
+                .message("Deleted by fileName is successfully.")
+                .timestamp(LocalDateTime.now())
+                .data(isDeleted)
+                .code(HttpStatus.OK.value())
+                .build();
+    }
+    @DeleteMapping
+    public BaseRest<?> deleteByName(){
+        boolean isDeletedAll = fileService.deleteAllFile();
+        return BaseRest.builder()
+                .status(true)
+                .message("Deleted all files is successfully.")
+                .timestamp(LocalDateTime.now())
+                .data(isDeletedAll)
+                .code(HttpStatus.OK.value())
+                .build();
+    }
+    @GetMapping("/download/{fileName}")
+    public BaseRest<?> downloadFile(@PathVariable String fileName){
+        return null;
+    }
+
 }
