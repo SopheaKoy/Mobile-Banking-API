@@ -41,6 +41,6 @@ public interface UserMapper {
 
     @SelectProvider(type = UserProvider.class, method="buildFindCardByIdSql")
     Optional<User> findCardById(String studentCardId);
-
+    
 
 }

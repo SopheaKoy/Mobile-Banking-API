@@ -1,5 +1,6 @@
 package co.istad.mbanking.api.account;
 
+import co.istad.mbanking.api.accounttype.AccountType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,5 +17,6 @@ public class Account {
     private String password;
     private String phone_number;
     private Integer transfer_limit;
-    private Integer account_type;
+    private AccountType  account_type;
+
 }

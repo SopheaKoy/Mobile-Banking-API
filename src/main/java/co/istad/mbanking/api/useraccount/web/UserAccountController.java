@@ -1,8 +1,6 @@
-package co.istad.mbanking.api.account.web;
+package co.istad.mbanking.api.useraccount.web;
 
-import co.istad.mbanking.api.account.Account;
-import co.istad.mbanking.api.account.AccountService;
-import co.istad.mbanking.api.accounttype.AccountType;
+import co.istad.mbanking.api.useraccount.UserAccountService;
 import co.istad.mbanking.base.BaseRest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,18 +12,19 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/account")
+@RequestMapping("/api/v1/user-account")
 @RequiredArgsConstructor
-public class AccountRestController {
-    private final AccountService accountService;
+public class UserAccountController {
+    private final UserAccountService userAccountService;
     @GetMapping
-    public BaseRest<?> findAll(AccountType accountType){
-        List<AccountDto> accountsDto = accountService.findAll(accountType);
+    public BaseRest<?> findAll(){
+       List<UserAccountDto> userAccountDto = userAccountService.findAll();
+        System.out.println(userAccountDto);
         return BaseRest.builder()
                 .code(HttpStatus.OK.value())
                 .status(true)
-                .message("User_Account has been found.")
-                .data(accountsDto)
+                .message("User has been found successfully.")
+                .data(userAccountDto)
                 .timestamp(LocalDateTime.now())
                 .build();
     }

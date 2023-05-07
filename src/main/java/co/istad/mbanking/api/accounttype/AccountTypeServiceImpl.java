@@ -63,14 +63,14 @@ public class AccountTypeServiceImpl implements AccountTypeService{
             return this.findAccountTypeById(id);
         }
         throw  new ResponseStatusException(HttpStatus.NOT_FOUND,
-                String.format("Account with %d not found..!"));
+                String.format("User_Account with %d not found..!"));
     }
 
     @Override
     public AccountTypeDto insertAccountType(CreateAccountTypeDto createAccountTypeDto) {
         AccountType accountType = accountTypeMapStruct.createAccountTypeToAccountDto(createAccountTypeDto);
         accountTypeMapper.insert(accountType);
-        log.info("Account : " +accountType);
+        log.info("User_Account : " +accountType);
         return this.findAccountTypeById(accountType.getId());
     }
 

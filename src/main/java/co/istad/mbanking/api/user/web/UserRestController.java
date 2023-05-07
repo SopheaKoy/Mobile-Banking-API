@@ -10,13 +10,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpRequest;
 import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/v1/users")
 @Slf4j
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000") // TODO enable cross-origin to get data in react js
 public class UserRestController {
     private final UserService userService;
 

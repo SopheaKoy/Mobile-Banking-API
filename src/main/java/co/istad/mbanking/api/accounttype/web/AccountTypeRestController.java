@@ -23,7 +23,7 @@ public class AccountTypeRestController {
        return BaseRest.builder()
                .status(true)
                .code(HttpStatus.OK.value())
-               .message("Account types have been found")
+               .message("User_Account types have been found")
                .timestamp(LocalDateTime.now())
                .data(accountTypeDtoList)
                .build();
@@ -35,7 +35,7 @@ public class AccountTypeRestController {
         return BaseRest.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("Account types have been found by id.")
+                .message("User_Account types have been found by id.")
                 .timestamp(LocalDateTime.now())
                 .data(accountTypeDto)
                 .build();

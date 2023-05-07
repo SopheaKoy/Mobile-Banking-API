@@ -7,7 +7,7 @@ import java.util.Optional;
 
 @Mapper
 public interface AccountTypeMapper {
-    // Select All Account Types
+    // Select All User_Account Types
     //! Repository  = DAO = Mapper
     //Using annotation it requires two parameters
     @SelectProvider(type = AccountTypeProvider.class, method = "buildSelectByNameSql")

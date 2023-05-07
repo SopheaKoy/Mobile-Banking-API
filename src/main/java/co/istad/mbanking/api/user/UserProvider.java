@@ -1,6 +1,5 @@
 package co.istad.mbanking.api.user;
 
-
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.jdbc.SQL;
 

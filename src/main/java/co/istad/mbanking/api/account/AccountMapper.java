@@ -1,16 +1,21 @@
 package co.istad.mbanking.api.account;
 
+import co.istad.mbanking.api.accounttype.AccountType;
+import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
+@Repository
+@Mapper
+public interface AccountMapper {
+    @SelectProvider(type = AccountProvider.class, method = "buildSelectProvider")
+    @Results(id = "accountResults", value ={
+        @Result(column = "account_type", property = "account_type" ,one = @One(select = "selectAccountType"))
+    })
+    List<Account> findAllAccount();
 
-public class AccountMapper {
-
-    List<Account> findAll(){
-        return null;
-    }
-
+    @Select("SELECT * FROM account_types WHERE id =#{account_type}")
+    AccountType selectAccountType(Integer account_type);
 }
