@@ -1,17 +1,18 @@
 package co.istad.mbanking.file;
 
 import co.istad.mbanking.base.BaseRest;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletResponse;
+;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,6 +23,9 @@ import java.util.List;
 public class FileRestController {
     // upload files use request path
     private final FileService fileService;
+
+    @Value("${file.base-url}")
+    public String fileBaseUrl;
     @PostMapping
     public BaseRest<?> uploadSingle(@RequestPart MultipartFile file){
         FileDto fileDto=fileService.uploadSingle(file);
@@ -95,8 +99,13 @@ public class FileRestController {
                 .build();
     }
     @GetMapping("/download/{fileName}")
-    public BaseRest<?> downloadFile(@PathVariable String fileName){
-        return null;
+    public ResponseEntity<?> downloadFile(@PathVariable("fileName") String fileName){
+        Resource resource = fileService.downloadFileByName(fileName);
+        System.out.println(fileBaseUrl+"api/v1/files/download/"+fileName);
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() +"\"")
+                .body(resource);
     }
 
 }

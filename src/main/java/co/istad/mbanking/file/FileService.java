@@ -1,6 +1,7 @@
 package co.istad.mbanking.file;
 
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.catalina.connector.Response;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,7 +44,7 @@ public interface FileService {
 
 
     // file Download by name
-   FileDownloadDto downloadFileByName(String name);
+    Resource downloadFileByName(String fileName);
 
 
 }

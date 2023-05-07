@@ -1,19 +1,30 @@
 package co.istad.mbanking.file;
 
 import co.istad.mbanking.util.FileUtil;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.slf4j.Slf4j;;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 
 import java.io.*;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @Service
 public class FileServiceImpl implements  FileService{
+    @Value("${file.server-path}")
+    public String fileServerPath;
     private  FileUtil fileUtil;
 
     @Autowired
@@ -96,22 +107,21 @@ public class FileServiceImpl implements  FileService{
     }
 
     @Override
-    public FileDownloadDto downloadFileByName(String fileName){
-        List<FileDownloadDto> downloads = new ArrayList<>();
+    public Resource downloadFileByName(String fileName) {
         File files = new File(fileUtil.fileServerPath);
-        File[] fileDownload = files.listFiles();
-        for (File file : fileDownload) {
-            if (file.isFile()) {
-                String name = file.getName();
-                String url = fileUtil.fileBaseUrl + name;
-                String downloadUrl = fileUtil.fileBaseUrl + name;
-                long size = file.length();
-                int lastDotIndex = name.lastIndexOf(".");
-                String extension = name.substring(lastDotIndex + 1);
-                downloads.add(new FileDownloadDto(name, url, downloadUrl, extension, size));
-                System.out.println(file);
+        File [] fileDownload = files.listFiles();
+        Path path = null;
+        for (File file : fileDownload){
+            String sortUrl = file.getName().substring(0,file.getName().length() - 5);
+            if (sortUrl.equals(fileName)){
+                path = Paths.get(fileServerPath + file.getName()).toAbsolutePath().normalize();
+                try {
+                    return new UrlResource(path.toUri());
+                } catch (MalformedURLException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
-        return null;
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND , "File download not found..!");
     }
 }
