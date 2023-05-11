@@ -3,13 +3,11 @@ package co.istad.mbanking.api.accounttype;
 import co.istad.mbanking.api.accounttype.web.AccountTypeDto;
 import co.istad.mbanking.api.accounttype.web.CreateAccountTypeDto;
 import co.istad.mbanking.api.accounttype.web.UpdateAccountTypeDto;
-import co.istad.mbanking.api.user.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -24,15 +22,9 @@ public class AccountTypeServiceImpl implements AccountTypeService{
 
     @Override
     public List<AccountTypeDto> findAll() {
-        List<AccountType> accountTypes = accountTypeMapper.selectAll();
+        List<AccountType> accountTypes = accountTypeMapper.select();
         return accountTypeMapStruct.toDtoList(accountTypes);
     }
-
-
-//    @Override
-//    public void insertAccountType(@RequestBody CreateAccountTypeDto createAccountTypeDto) {
-//       accountTypeMapper.insert(accountTypeMapStruct.createAccountTypeToAccountDto(createAccountTypeDto));
-//    }
 
     @Override
     public Integer deleteAccountTypeById(Integer id) {

@@ -3,8 +3,6 @@ package co.istad.mbanking.api.accounttype;
 import co.istad.mbanking.api.accounttype.web.AccountTypeDto;
 import co.istad.mbanking.api.accounttype.web.CreateAccountTypeDto;
 import co.istad.mbanking.api.accounttype.web.UpdateAccountTypeDto;
-import co.istad.mbanking.api.user.web.CreateUserDto;
-import co.istad.mbanking.api.user.web.UserDto;
 
 import java.util.List;
 

@@ -13,6 +13,9 @@ public interface AccountTypeMapper {
     @SelectProvider(type = AccountTypeProvider.class, method = "buildSelectByNameSql")
     List<AccountType> selectAll();
 
+    @SelectProvider(type = AccountTypeProvider.class, method = "buildSelectSql")
+    List<AccountType> select();
+
     @Select("SELECT EXISTS (SELECT * FROM account_types WHERE id = #{id})")
     boolean existsById(@Param("id") Integer id);
 

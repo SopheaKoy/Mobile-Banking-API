@@ -9,21 +9,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/account-type")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin("http://localhost:3000")
 public class AccountTypeRestController {
+
     private final AccountTypeService accountTypeService;
     @GetMapping
-
-    public BaseRest<?> findAll(){
+    public BaseRest<?> selectAll(){
        var accountTypeDtoList = accountTypeService.findAll();
        return BaseRest.builder()
                .status(true)
                .code(HttpStatus.OK.value())
-               .message("User_Account types have been found")
+               .message("User Account types have been found")
                .timestamp(LocalDateTime.now())
                .data(accountTypeDtoList)
                .build();
@@ -35,7 +36,7 @@ public class AccountTypeRestController {
         return BaseRest.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("User_Account types have been found by id.")
+                .message("User Account types have been found by id.")
                 .timestamp(LocalDateTime.now())
                 .data(accountTypeDto)
                 .build();

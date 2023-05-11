@@ -9,9 +9,8 @@ public class AccountTypeProvider {
 
     public String buildSelectSql() {
         return new SQL() {{
-            //TODO:
             SELECT("*");
-            FROM("account_types");
+            FROM(tableName);
         }}.toString();
     }
 

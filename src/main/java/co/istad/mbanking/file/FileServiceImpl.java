@@ -1,7 +1,8 @@
 package co.istad.mbanking.file;
 
 import co.istad.mbanking.util.FileUtil;
-import lombok.extern.slf4j.Slf4j;;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -22,6 +23,7 @@ import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class FileServiceImpl implements  FileService{
     @Value("${file.server-path}")
     public String fileServerPath;
@@ -75,10 +77,21 @@ public class FileServiceImpl implements  FileService{
             int lastDotIndex = name.indexOf(".");
             String extension = name.substring(lastDotIndex +1);
             File file = getFileByName[0];
-            return new FileDto(file.getName(), url,extension,size);
+            return new FileDto(name, url,extension,size);
         }else{
             return null;
         }
+    }
+
+    @Override
+    public FileDto findByName(String name) throws IOException {
+        Resource resource = fileUtil.findByName(name);
+        return FileDto.builder()
+                .fileName(resource.getFilename())
+                .extension(fileUtil.getExtension(resource.getFilename()))
+                .url(String.format("%s%s" ,fileUtil.fileBaseUrl , resource.getFilename()))
+                .size(resource.contentLength())
+                .build();
     }
 
     @Override
@@ -123,5 +136,10 @@ public class FileServiceImpl implements  FileService{
             }
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND , "File download not found..!");
+    }
+
+    @Override
+    public Resource downloadFile(String name) {
+        return fileUtil.findByName(name);
     }
 }

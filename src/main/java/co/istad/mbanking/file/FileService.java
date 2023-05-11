@@ -1,7 +1,5 @@
 package co.istad.mbanking.file;
 
-import jakarta.servlet.http.HttpServletResponse;
-import org.apache.catalina.connector.Response;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,18 +31,42 @@ public interface FileService {
     List<FileDto> getListOfFiles();
 
 
-    // find image by filename
+    /**
+     * find image by filename
+     * st 1
+     * @param name
+     * @return
+     */
     FileDto getFileByName(String name);
+
+    /**
+     * sc 2
+     * @param name
+     * @return
+     */
+
+    FileDto findByName(String name) throws IOException;
+
 
     // Delete by filename
     boolean deleteFileByName(String name);
 
-    // Delete all File
+    /**
+     * use for delete all files
+     * @return
+     */
     boolean deleteAllFile();
 
 
     // file Download by name
     Resource downloadFileByName(String fileName);
+
+    // File Download by file Name
+
+    Resource downloadFile(String name);
+
+    // In spring it has clas resource
+
 
 
 }
