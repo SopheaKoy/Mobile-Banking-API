@@ -20,4 +20,11 @@ public class User {
     private Boolean isStudent;
     private Boolean isDeleted;
     private List<Account> accountList;
+
+
+    //Auth feature info
+    private String email;
+    private String password;
+    private Boolean isVerified;
+    private String verifiedCode;
 }

@@ -20,11 +20,18 @@ repositories {
 }
 
 dependencies {
-    //config mapstructe with lombok
-    implementation 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+    // thymeleaf
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    //mail
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    //spring boot security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    //config mapstruct with lombok
+    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
-    compileOnly 'org.projectlombok:lombok'
+    implementation 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.1'
