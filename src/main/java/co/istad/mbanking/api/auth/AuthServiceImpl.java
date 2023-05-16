@@ -33,21 +33,33 @@ public class AuthServiceImpl implements AuthService{
         User user = userMapStruct.registerUserDtoUser(registerDto);
         user.setIsVerified(false);
         user.setPassword(encoder.encode(user.getPassword()));
-        log.info("Gmail : {} ",user.getEmail());
-        authMapper.register(user);
+        System.out.println(user.getEmail());
+        if(authMapper.register(user)){
+            for (Integer role : registerDto.roleIds()){
+                authMapper.createUserRole(user.getId(), role);
+            }
+        }
+//        authMapper.register(user);
     }
 
     @Override
     public void verify(String email) {
         User user = authMapper.selectByEmail(email).orElseThrow(()->
                 new ResponseStatusException(HttpStatus.NOT_FOUND , "Email has not been found"));
-        user .setVerifiedCode(UUID.randomUUID().toString());
+        String verifiedCode=UUID.randomUUID().toString();
+        user.setVerifiedCode(verifiedCode);
+        if(authMapper.updateVerifiedCode(email,verifiedCode)){
+            user.setVerifiedCode(verifiedCode);
+        }else{
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    "email can not be verify");
+        }
         MailUntil.Meta<?> meta = MailUntil.Meta.builder()
                 .to(email)
                 .from(from)
                 .subject("Account Verification.")
                 .templateUrl("auth/verify")
-                .data(null)
+                .data(user)
                 .build();
 
         try {
@@ -57,4 +69,14 @@ public class AuthServiceImpl implements AuthService{
                     e.getMessage());
         }
     }
+
+    @Override
+    public void checkVerify(String email, String code) {
+        User user  = authMapper.selectByEmailAndVerifiedCode(email,code)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Email not found."));
+        if (!user.getIsVerified()){
+            authMapper.updateIsVerifyStatus(email,code);
+        }
+    }
+
 }

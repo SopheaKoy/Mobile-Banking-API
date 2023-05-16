@@ -9,4 +9,6 @@ public interface AuthService {
 
     void verify(String email);
 
+    void checkVerify(String email, String code);
+
 }

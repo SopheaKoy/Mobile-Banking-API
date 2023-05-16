@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class AuthRestController {
 
-    private final AuthService   authService;
+    private final AuthService  authService;
     @PostMapping("/register")
     public BaseRest<?> register(@Valid @RequestBody RegisterDto register){
         authService.register(register);
@@ -28,13 +28,25 @@ public class AuthRestController {
     }
 
     @PostMapping("/verify")
-    public BaseRest<?>verify(@RequestParam String email){
+    public BaseRest<?> verify(@RequestParam String email){
         authService.verify(email);
         return BaseRest.builder()
                 .code(HttpStatus.OK.value())
                 .message("You have been send successfully.")
                 .timestamp(LocalDateTime.now())
                 .status(true )
+                .data(email)
+                .build();
+    }
+    @GetMapping("/check-verify")
+    public BaseRest<?> checkVerify(@RequestParam String email, @RequestParam String verifiedCode){
+        System.out.println("biewfbuyivefwuyviyefq");
+        authService.checkVerify(email,verifiedCode);
+        return BaseRest.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("You have been verified successfully.")
+                .timestamp(LocalDateTime.now())
                 .data(email)
                 .build();
     }

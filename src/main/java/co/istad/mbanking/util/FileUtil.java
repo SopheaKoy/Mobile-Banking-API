@@ -39,7 +39,7 @@ public class FileUtil {
                             .fileName(name)
                             .url(url)
                             .extension(extension)
-                    //                            .downloadUrl(String.format("%s.%s" , fileDownloadUrl+name))
+                    //.downloadUrl(String.format("%s.%s" , fileDownloadUrl+name))
                             .size(size)
                             .build();
         } catch (IOException e) {

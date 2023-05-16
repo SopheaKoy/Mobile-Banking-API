@@ -35,7 +35,7 @@ public class MailUntil {
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
         // 1. Prepare template
         Context context = new Context();
-        context.setVariable("name",meta.data);
+        context.setVariable("data",meta.data);
         String htmlTemplate = templateEngine.process(meta.templateUrl, context);
         helper.setText(htmlTemplate, true);
 

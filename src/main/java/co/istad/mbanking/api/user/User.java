@@ -1,5 +1,6 @@
 package co.istad.mbanking.api.user;
 import co.istad.mbanking.api.account.Account;
+import co.istad.mbanking.api.auth.Role;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,10 +22,10 @@ public class User {
     private Boolean isDeleted;
     private List<Account> accountList;
 
-
     //Auth feature info
     private String email;
     private String password;
     private Boolean isVerified;
     private String verifiedCode;
+    private List<Role> roles;
 }
