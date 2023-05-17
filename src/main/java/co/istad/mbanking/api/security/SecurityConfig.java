@@ -63,6 +63,7 @@ public class SecurityConfig {
             auth.anyRequest().authenticated();
         });
         http.httpBasic();
+        // Stateless
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         return http.build();

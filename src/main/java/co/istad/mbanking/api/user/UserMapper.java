@@ -25,7 +25,6 @@ public interface UserMapper {
     @Select("SELECT EXISTS (SELECT * FROM users WHERE id = #{id})")
     boolean existsById(@Param("id") Integer id);
 
-
     @DeleteProvider(type = UserProvider.class, method="buildDeleteById")
     void deleteById(@Param("id") Integer id);
 
@@ -41,6 +40,11 @@ public interface UserMapper {
 
     @SelectProvider(type = UserProvider.class, method="buildFindCardByIdSql")
     Optional<User> findCardById(String studentCardId);
-    
+
+    @Select("SELECT EXISTS(SELECT * FROM users WHERE email = #{email})")
+    boolean existsByEmail(String email);
+
+    @Select("SELECT EXISTS(SELECT * FROM roles WHERE id = #{roleId})")
+    boolean checkRoleId(Integer roleId);
 
 }

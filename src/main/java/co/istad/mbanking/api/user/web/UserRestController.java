@@ -1,6 +1,5 @@
 package co.istad.mbanking.api.user.web;
 
-import co.istad.mbanking.api.user.User;
 import co.istad.mbanking.api.user.UserService;
 import co.istad.mbanking.base.BaseRest;
 import com.github.pagehelper.PageInfo;

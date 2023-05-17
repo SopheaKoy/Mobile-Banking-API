@@ -20,6 +20,8 @@ repositories {
 }
 
 dependencies {
+    // password
+    implementation group: 'org.passay', name: 'passay', version: '1.6.3'
     // thymeleaf
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     //mail

@@ -39,7 +39,6 @@ public class AuthServiceImpl implements AuthService{
                 authMapper.createUserRole(user.getId(), role);
             }
         }
-//        authMapper.register(user);
     }
 
     @Override
