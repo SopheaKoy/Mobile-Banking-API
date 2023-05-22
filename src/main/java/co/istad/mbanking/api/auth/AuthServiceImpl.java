@@ -1,5 +1,7 @@
 package co.istad.mbanking.api.auth;
 
+import co.istad.mbanking.api.auth.web.AuthDto;
+import co.istad.mbanking.api.auth.web.LogInDto;
 import co.istad.mbanking.api.auth.web.RegisterDto;
 import co.istad.mbanking.api.user.User;
 import co.istad.mbanking.api.user.UserMapStruct;
@@ -9,10 +11,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Base64;
 import java.util.UUID;
 
 @Service
@@ -24,6 +30,7 @@ public class AuthServiceImpl implements AuthService{
     private final UserMapStruct userMapStruct;
     private final PasswordEncoder encoder;
     private final MailUntil mailUntil;
+    private final DaoAuthenticationProvider daoAuthenticationProvider;
 
     @Value("${spring.mail.username}")
     private String from;
@@ -76,6 +83,24 @@ public class AuthServiceImpl implements AuthService{
         if (!user.getIsVerified()){
             authMapper.updateIsVerifyStatus(email,code);
         }
+    }
+
+    @Override
+    public AuthDto login(LogInDto loginDto) {
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(loginDto.email() ,loginDto.password());
+        authentication = daoAuthenticationProvider.authenticate(authentication);
+
+        log.info("Authentication {}" ,authentication);
+        log.info("Authentication {}" ,authentication.getName());
+        log.info("Authentication {}" ,authentication.getCredentials());
+
+        String basicAuthFormat = authentication.getName() +":"+authentication.getCredentials();
+        String encoding = Base64.getEncoder().encodeToString(basicAuthFormat.getBytes());
+
+        log.info("Base {}" , encoding);
+
+        return new AuthDto(String.format("Basic %s",encoding));
     }
 
 }

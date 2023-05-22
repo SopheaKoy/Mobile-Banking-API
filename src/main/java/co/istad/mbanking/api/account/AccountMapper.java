@@ -3,7 +3,6 @@ package co.istad.mbanking.api.account;
 import co.istad.mbanking.api.accounttype.AccountType;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 

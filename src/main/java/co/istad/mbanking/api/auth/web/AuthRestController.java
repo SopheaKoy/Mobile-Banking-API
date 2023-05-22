@@ -40,7 +40,6 @@ public class AuthRestController {
     }
     @GetMapping("/check-verify")
     public BaseRest<?> checkVerify(@RequestParam String email, @RequestParam String verifiedCode){
-        System.out.println("biewfbuyivefwuyviyefq");
         authService.checkVerify(email,verifiedCode);
         return BaseRest.builder()
                 .status(true)
@@ -50,4 +49,17 @@ public class AuthRestController {
                 .data(email)
                 .build();
     }
+
+    @PostMapping("/login")
+    public BaseRest<?> login(@Valid @RequestBody LogInDto loginDto){
+        AuthDto authDto = authService.login(loginDto);
+        return BaseRest.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("You have been login successfully.")
+                .timestamp(LocalDateTime.now())
+                .data(authDto)
+                .build();
+    }
+
 }
