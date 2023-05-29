@@ -14,12 +14,18 @@ public interface UserMapper {
     @Options(useGeneratedKeys = true , keyColumn = "id", keyProperty = "id")
     void insert(@Param("u") User user);
 
+    // param in my batis
+
     @SelectProvider(type = UserProvider.class ,method = "buildSelectById")
     @Results(id ="userResultMap", value = {
             @Result(column="student_card_id", property = "studentCardId"),
             @Result(column="is_student" , property = "isStudent")
     })
     Optional<User> selectById(@Param("id") Integer Id);
+
+    @SelectProvider(type = UserProvider.class, method="buildSelectNameSql")
+    @ResultMap("userResultMap")
+    List<User> select(String name);
 
 
     @Select("SELECT EXISTS (SELECT * FROM users WHERE id = #{id})")
@@ -31,9 +37,7 @@ public interface UserMapper {
     @UpdateProvider(type = UserProvider.class, method = "buildUpdateIsDeletedByIdSql")
     void updateIsDeletedById(@Param("id") Integer id,@Param("status") boolean status);
 
-    @SelectProvider(type = UserProvider.class, method="buildSelectNameSql")
-    @ResultMap("userResultMap")
-    List<User> select(String name);
+
 
     @UpdateProvider(type = UserProvider.class, method = "buildUpdateByIdSql")
     void updateById(@Param("u") User user);

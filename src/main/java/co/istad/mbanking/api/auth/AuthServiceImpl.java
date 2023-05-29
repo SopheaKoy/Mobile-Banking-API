@@ -14,12 +14,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Base64;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +38,7 @@ public class AuthServiceImpl implements AuthService{
     private final PasswordEncoder encoder;
     private final MailUntil mailUntil;
     private final DaoAuthenticationProvider daoAuthenticationProvider;
+    private final JwtEncoder jwtEncoder;
 
     @Value("${spring.mail.username}")
     private String from;
@@ -67,7 +75,6 @@ public class AuthServiceImpl implements AuthService{
                 .templateUrl("auth/verify")
                 .data(user)
                 .build();
-
         try {
             mailUntil.send(meta);
         } catch (MessagingException e) {
@@ -90,17 +97,36 @@ public class AuthServiceImpl implements AuthService{
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(loginDto.email() ,loginDto.password());
         authentication = daoAuthenticationProvider.authenticate(authentication);
+//        log.info("Authentication {}" ,authentication);
+//        log.info("Authentication {}" ,authentication.getName());
+//        log.info("Authentication {}" ,authentication.getCredentials());
+//
+//        String basicAuthFormat = authentication.getName() +":"+authentication.getCredentials();
+//        String encoding = Base64.getEncoder().encodeToString(basicAuthFormat.getBytes());
+//
+//        log.info("Base {}" , encoding);
+//
+//        return new AuthDto(String.format("Basic %s",encoding));
 
-        log.info("Authentication {}" ,authentication);
-        log.info("Authentication {}" ,authentication.getName());
-        log.info("Authentication {}" ,authentication.getCredentials());
+        // Create time now
+        Instant now =Instant.now();
 
-        String basicAuthFormat = authentication.getName() +":"+authentication.getCredentials();
-        String encoding = Base64.getEncoder().encodeToString(basicAuthFormat.getBytes());
+        //Define scope
+        String scope = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(""));
+        JwtClaimsSet jwtClaimsSet = JwtClaimsSet.builder()
+                .issuer("self")
+                .issuedAt(now)
+                .subject(authentication.getName())
+                .expiresAt(now.plus(1, ChronoUnit.HOURS))
+                .claim("scope", scope)
+                .build();
 
-        log.info("Base {}" , encoding);
-
-        return new AuthDto(String.format("Basic %s",encoding));
+        String accessToken = jwtEncoder.encode(
+                JwtEncoderParameters.from(jwtClaimsSet)
+        ).getTokenValue();
+        return new AuthDto("Bearer",accessToken);
     }
 
 }

@@ -22,7 +22,7 @@ public class AuthRestController {
                 .code(HttpStatus.OK.value())
                 .message("You have been registered successfully.")
                 .timestamp(LocalDateTime.now())
-                .status(true )
+                .status(true)
                 .data(register.email())
                 .build();
     }

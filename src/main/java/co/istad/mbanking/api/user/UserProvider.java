@@ -5,7 +5,6 @@ import org.apache.ibatis.jdbc.SQL;
 
 public class UserProvider {
     private static final String tableName = "users";
-    @Result(column = "is_StudentJi")
     public String buildInsertSql(){
         return new SQL(){{
             INSERT_INTO(tableName);

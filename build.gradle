@@ -20,6 +20,8 @@ repositories {
 }
 
 dependencies {
+    // oauth2 client & JWT
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
     // password
     implementation group: 'org.passay', name: 'passay', version: '1.6.3'
     // thymeleaf

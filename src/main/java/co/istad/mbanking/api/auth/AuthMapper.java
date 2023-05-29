@@ -1,5 +1,6 @@
 package co.istad.mbanking.api.auth;
 
+import co.istad.mbanking.api.user.Authority;
 import co.istad.mbanking.api.user.User;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -16,6 +17,8 @@ public interface AuthMapper {
 
     @InsertProvider(type = AuthProvider.class, method = "buildRegisterCreateUserRoleSql")
     void createUserRole(@Param("userId") Integer userId, @Param("roleId") Integer roleId);
+
+    // use results to provide field in db and field in POJO class same .
 
     @Select("SELECT * FROM users WHERE email=#{email} AND is_deleted=FALSE")
     @Results(id = "authResult", value = {
@@ -44,6 +47,12 @@ public interface AuthMapper {
 
 
     @SelectProvider(type = AuthProvider.class, method = "buildLoadUserRolesSql")
+    @Result(column = "id" , property = "authorities" ,
+        many = @Many(select = "loadUserAuthorities")
+    )
     List<Role> loadUserRoles(@Param("id") Integer id);
+
+    @SelectProvider(type = Authority.class, method = "buildLoadUserAuthoritiesSql")
+    List<Authority> loadUserAuthorities(Integer roleId);
 
 }

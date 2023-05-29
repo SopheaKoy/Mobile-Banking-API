@@ -1,7 +1,9 @@
-package co.istad.mbanking.api.auth;
+package co.istad.mbanking.api.user;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Set;
 
 @Getter
 @Setter
@@ -11,8 +13,9 @@ import org.springframework.security.core.GrantedAuthority;
 public class Role implements GrantedAuthority {
     private Integer id;
     private String name;
+    private Set<Authority> authorities;
     @Override
     public String getAuthority(){
-        return "ROLE_"+ name; // spring need require prefix ROLE_
+        return "ROLE_"+ name; // Customer Role
     }
 }

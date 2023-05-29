@@ -55,4 +55,12 @@ public class AuthProvider {
             WHERE("ur.user_id=#{id}");
         }}.toString();
     }
+    public String loadUserAuthorities(){
+        return new SQL(){{
+            SELECT("a.id, a.name");
+            FROM("authorities AS a");
+            INNER_JOIN("roles_authorities AS ra ON ra.authority_id = a.id");
+            WHERE("ra.role_id = #{roleId}");
+        }}.toString();
+    }
 }

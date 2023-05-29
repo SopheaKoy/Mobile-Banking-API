@@ -47,7 +47,6 @@ public class FileUtil {
                     "Upload file failed....!");
         }
     }
-
     /**
      * In spring have one  class resource
      * Create path object

@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper
 public interface AccountMapper {
     @SelectProvider(type = AccountProvider.class, method = "buildSelectProvider")
-    @Results(id = "accountResults", value ={
+    @Results(id = "accountResults", value = {
         @Result(column = "account_type", property = "account_type" ,one = @One(select = "selectAccountType"))
     })
     List<Account> findAllAccount();

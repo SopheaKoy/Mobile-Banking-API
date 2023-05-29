@@ -43,10 +43,6 @@ public class AccountTypeServiceImpl implements AccountTypeService{
 
     @Override
     public AccountTypeDto updateAccountTypeById(Integer id, UpdateAccountTypeDto updateAccountTypeDto) {
-//        AccountType accountType = accountTypeMapStruct.updateAccountTypeToAccountDto(updateAccountTypeDto);
-//        accountTypeMapper.updateById(accountType);
-//        System.out.println(accountType.getName());
-//        return null;
         AccountType  accountType;
         if(accountTypeMapper.existsById(id)){
             accountType =accountTypeMapStruct.updateAccountTypeToAccountDto(updateAccountTypeDto);
